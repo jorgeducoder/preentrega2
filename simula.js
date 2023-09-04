@@ -152,7 +152,7 @@ const dbIngredientes = [
         precio: 1.51,
         moneda: "U$S",
     },
-    
+
     {
         nombre: "morron rojo",
         unidad: "kg",
@@ -396,7 +396,7 @@ const dbRecetas = [
     },
     {
 
-        nombre: "Pastafrola",
+        nombre: "Pasta Frola",
         porciones: 8,
         recetadesc: "Como se mezclan los ingredientes"
     },
@@ -544,14 +544,14 @@ const dbIngRecetas = [
         canting: 1,
         unidading: "uni",
     },
-    
+
     {
         idreceta: "Pascualina",
         iding: "panceta",
         canting: 50,
         unidading: "g",
     },
-    
+
     {
         idreceta: "Pascualina",
         iding: "queso rallado",
@@ -586,11 +586,58 @@ const dbIngRecetas = [
         canting: 50,
         unidading: "g",
     },
-
     {
-        idreceta: "Pascualina",
+        idreceta: "Pasta Frola",
+        iding: "manteca",
+        canting: 150,
+        unidading: "g",
+    },
+    {
+        idreceta: "Pasta Frola",
         iding: "azucar",
+        canting: 150,
+        unidading: "g",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "huevos",
+        canting: 1,
+        unidading: "uni",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "yemas huevo",
+        canting: 2,
+        unidading: "uni",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "vainilla",
         canting: 5,
+        unidading: "ml",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "limon",
+        canting: 1,
+        unidading: "uni",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "harina",
+        canting: 0.32,
+        unidading: "kg",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "polvo de hornear",
+        canting: 5,
+        unidading: "g",
+    },
+    {
+        idreceta: "Pasta Frola",
+        iding: "dulce de membrillo",
+        canting: 350,
         unidading: "g",
     },
 ];
@@ -601,7 +648,7 @@ let trueOrFalse = true;
 
 
 function menu() {
-    let opcion = (prompt("Elije una opción  \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver costo de una receta \n 10. Salir"));
+    let opcion = (prompt("Elije una opción  \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"));
 
     while (trueOrFalse) {
 
@@ -619,6 +666,9 @@ function menu() {
                 lingreceta();
                 break;
             case "5":
+                lrecetas();
+                break;
+            case "6":
                 vcostoreceta();
                 break;
             case "10":
@@ -627,7 +677,7 @@ function menu() {
             default:
                 alert("No has elegido una opción válida");
                 opcion = prompt(
-                    "Elije una opción  \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver costo de una receta \n 10. Salir"
+                    "Elije una opción  \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"
                 );
                 break;
         }
@@ -687,8 +737,22 @@ function lingreceta() {
     menu();
 }
 
+function lrecetas() {
+    let recetas = "";
+    let cabezal = "Receta   Porciones   Preparacion"
+    dbRecetas.forEach((receta) => {
+        recetas += receta.nombre + "       " + receta.porciones + "  " + receta.recetadesc + "\n";
+    });
+
+    console.log(cabezal)
+    console.log(recetas)
+    menu();
+}
+
+
 function vcostoreceta() {
-    //var precioreceta = 0
+    /* Funcion que calcula el costo de una receta y da la opcion de calcular un precio de venta a partir de un porcentaje expresado con un entero.
+    Si encuentra la receta en el array llama a la funcion buscarprecio de un ingrediente, unidad y cantidad.*/
     var mostrarprecioreceta = 0;
     let porcentajeganancia;
     let unareceta = prompt("Ingrese el nombre de una receta");
@@ -698,37 +762,37 @@ function vcostoreceta() {
 
     if (recetaEncontrada.length > 0) {
         recetaEncontrada.forEach((elm) => {
+
             mostrarprecioreceta = mostrarprecioreceta + (buscarprecio(elm.iding, elm.unidading, elm.canting));
-            alert("volvi");
-            alert(mostrarprecioreceta)
-            /*if (buscarprecio(elm.iding, elm.unidading, elm.canting) > 0) {
-                //precioreceta = precioreceta + buscarprecio(elm.iding, elm.unidading, elm.canting);
-                mostrarprecioreceta =  buscarprecio(elm.iding, elm.unidading, elm.canting);
-                alert("volvi")
-                //alert(precioreceta)
-            }*/
+
         });
+
+
+        alert("El precio de costo en U$S es" + " " + mostrarprecioreceta.toFixed(2));
+
+        porcentajeganancia = parseInt(prompt("Si lo desea, ingrese el numero del porcentje a aplicar para calcular precio de venta"));
+
+        if (porcentajeganancia > 0) {
+            let precioventa = mostrarprecioreceta * (1 + (porcentajeganancia / 100))
+            alert("El precio de venta en U$S es" + " " + precioventa.toFixed(2))
+        } else {
+
+            alert("No se calculara precio de venta")
+        }
     } else {
         alert("La receta no existe");
     }
-    alert("El precio de costo en U$S es" + " " + mostrarprecioreceta.toFixed(2));
 
-    porcentajeganancia = parseInt(prompt("Si lo desea, ingrese el numero del porcentje a aplicar para calcular precio de venta")); 
-    
-    if (porcentajeganancia > 0) {
-       let precioventa = mostrarprecioreceta*(1 + (porcentajeganancia/100))
-       alert ( "El precio de venta en U$S es" + " " + precioventa.toFixed(2))
-     } else  {
-
-        alert ("No se calculara precio de venta")
-    }
     menu();
 }
 
 
-
-
 function buscarprecio(pingrediente, punidad, pcanting) {
+    /* Funcion que recibe cada ingrediente, unidad y cantidad de una receta para calcular el costo de la misma.
+    El ingrediente en una receta puede tener una unidad de medida distinta a la unidad de su precio, 
+    por lo que si no encuentra el precio en la misma unidad, busca en el array equivalencias para ver si hay una conversion y asi calcular el costo,
+    Hay equivalencias en relacion uno a uno, y hay equivalencias una a varios ingredientes. */
+    
     var precioreceta = 0
     var cantidadconequivalencia = 0;
     let ingredienteencontrado = dbIngredientes.filter(
@@ -736,29 +800,17 @@ function buscarprecio(pingrediente, punidad, pcanting) {
     );
     if (ingredienteencontrado.length === 1) {
 
-        alert("pase por if 1");
-        alert(pingrediente + " " + punidad);
-        alert(ingredienteencontrado[0].unidadprecio);
-        console.log(ingredienteencontrado);
-
         if (ingredienteencontrado[0].unidadprecio === punidad) {
 
-            alert("pase por if 2");
-            alert(pingrediente + " " + punidad + " " + ingredienteencontrado[0].precio);
-            //return pcanting * ingredienteencontrado[0].precio;
             precioreceta = (pcanting * ingredienteencontrado[0].precio);
+
         } else {
             let equivalenciaencontrada = dbUnidadesequiv.filter(
                 (elm) => elm.unidadA === ingredienteencontrado[0].unidadprecio && elm.unidadB === punidad && elm.ingrediente === pingrediente
             );
             if (equivalenciaencontrada.length === 1) {
 
-                alert("encontre equivalencia");
-                console.log(equivalenciaencontrada);
-
                 cantidadconequivalencia = pcanting / equivalenciaencontrada[0].conversion;
-
-                //return ingredienteencontrado[0].precio * cantidadconequivalencia;
                 precioreceta = (ingredienteencontrado[0].precio * cantidadconequivalencia);
 
             } else {
@@ -766,21 +818,14 @@ function buscarprecio(pingrediente, punidad, pcanting) {
                     (elm) => elm.unidadA === ingredienteencontrado[0].unidadprecio && elm.unidadB === punidad && elm.ingrediente === "todos");
                 if (equivalenciaencontrada.length === 1) {
 
-
-                    alert("encontre equivalencia todos");
-                    console.log(equivalenciaencontrada);
-
                     cantidadconequivalencia = pcanting / equivalenciaencontrada[0].conversion;
 
-                    //return ingredienteencontrado[0].precio * cantidadconequivalencia;
                     precioreceta = (ingredienteencontrado[0].precio * cantidadconequivalencia);
-
 
                 } else {
                     alert("No se encontro una equivalencia, no se calcula el costo para ese ingrediente" + "  " + pingrediente)
                 }
             }
-
         }
         return precioreceta
     } else {
